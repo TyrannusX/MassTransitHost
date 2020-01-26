@@ -21,6 +21,8 @@ namespace MassTransitHost.Services
             var streamReader = new XmlTextReader(new MemoryStream(Encoding.UTF8.GetBytes(context.Message.Xml)));
             streamReader.Namespaces = false;
             var person = (Person)xmlSerializer.Deserialize(streamReader);
+            Console.WriteLine($"First name is {person.FirstName}");
+            throw new Exception();
         }
     }
 }

@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Topshelf;
+using MassTransit.QuartzIntegration;
 
 namespace MassTransitHost.Services
 {
@@ -35,14 +36,13 @@ namespace MassTransitHost.Services
         {
             return Bus.Factory.CreateUsingRabbitMq(cfg =>
             {
-                cfg.Host("amqp://guest:guest@localhost");
+                cfg.Host("amqp://guest:guest@localhost/local_vh");
                 cfg.ReceiveEndpoint("test_queue", e =>
                 {
                     e.UseConcurrencyLimit(5);
                     e.UseMessageRetry(r =>
                     {
-                        r.Exponential(10, TimeSpan.FromSeconds(10), TimeSpan.FromMinutes(30), TimeSpan.FromSeconds(10));
-                        
+                        r.Exponential(10, TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10));
                     });
                     e.Consumer<MessageProcessor>();
                 });

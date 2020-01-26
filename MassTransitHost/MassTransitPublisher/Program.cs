@@ -16,8 +16,11 @@ namespace MassTransitPublisher
         public static async Task Main(string[] args)
         {
             //configure bus
-            var bus = Bus.Factory.CreateUsingRabbitMq();
-            var endpoint = await bus.GetSendEndpoint(new Uri("rabbitmq://localhost/test_queue")).ConfigureAwait(false);
+            var bus = Bus.Factory.CreateUsingRabbitMq(cfg =>
+            {
+                cfg.Host("amqp://guest:guest@localhost/local_vh");
+            });
+            var endpoint = await bus.GetSendEndpoint(new Uri("amqp://guest:guest@localhost/local_vh/test_queue")).ConfigureAwait(false);
 
             //create and serialize object
             var person = new Person() { FirstName = "LolzCat" };
@@ -37,7 +40,8 @@ namespace MassTransitPublisher
 
             //send
             var myMessage = new MyMessage() { Xml = xml };
-            await endpoint.Send(myMessage).ConfigureAwait(false);
+            for (int i = 0; i < 1; i++)
+                await endpoint.Send(myMessage).ConfigureAwait(false);
         }
     }
 }
