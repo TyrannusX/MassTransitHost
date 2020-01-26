@@ -16,7 +16,6 @@ namespace MassTransitHost.Services
     {
         public async Task Consume(ConsumeContext<MyMessage> context)
         {
-            await Task.Delay(5000);
             Console.WriteLine($"Received message {context.Message.Xml}");
             var xmlSerializer = new XmlSerializer(typeof(Person));
             var streamReader = new XmlTextReader(new MemoryStream(Encoding.UTF8.GetBytes(context.Message.Xml)));
