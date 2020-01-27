@@ -1,5 +1,7 @@
 ﻿using MassTransit;
+using MassTransit.Context;
 using MassTransitHost.Models;
+using RabbitMQ.Client.Framing;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,6 +21,7 @@ namespace MassTransitPublisher
             var bus = Bus.Factory.CreateUsingRabbitMq(cfg =>
             {
                 cfg.Host("amqp://guest:guest@localhost/local_vh");
+                cfg.ConfigureSend(s => s.UseSendExecute(c => c.Headers.Set("CorrelationId", Guid.NewGuid().ToString())));
             });
             var endpoint = await bus.GetSendEndpoint(new Uri("amqp://guest:guest@localhost/local_vh/test_queue")).ConfigureAwait(false);
 
