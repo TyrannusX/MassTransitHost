@@ -28,7 +28,7 @@ namespace MassTransitHost.Services
 
         public bool Stop(HostControl hostControl)
         {
-            _busControl?.Stop(TimeSpan.FromSeconds(30));
+            _busControl.Stop();
             return true;
         }
 

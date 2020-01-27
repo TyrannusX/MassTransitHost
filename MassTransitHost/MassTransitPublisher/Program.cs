@@ -43,7 +43,7 @@ namespace MassTransitPublisher
 
             //send
             var myMessage = new MyMessage() { Xml = xml };
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 100; i++)
                 await endpoint.Send(myMessage).ConfigureAwait(false);
         }
     }
