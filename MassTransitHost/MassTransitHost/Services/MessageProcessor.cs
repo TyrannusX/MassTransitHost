@@ -16,7 +16,7 @@ namespace MassTransitHost.Services
     {
         public async Task Consume(ConsumeContext<MyMessage> context)
         {
-            Console.WriteLine($"Received message {context.Message.Xml}");
+            Console.WriteLine($"Received message {context.Message.Xml} with retry count {context.GetRetryCount()}");
             var xmlSerializer = new XmlSerializer(typeof(Person));
             var streamReader = new XmlTextReader(new MemoryStream(Encoding.UTF8.GetBytes(context.Message.Xml)));
             streamReader.Namespaces = false;
